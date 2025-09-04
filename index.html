@@ -12,32 +12,25 @@
 </head>
   <!-- Firebase App (core SDK) -->
 <script type="module">
-  // Import the functions you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
-  import { getFirestore } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+  import { db } from "./firebase.js";
+  import { collection, addDoc } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
 
-  // Your web app's Firebase configuration
-  const firebaseConfig = {
-    apiKey: "AIzaSyD...etc",
-    authDomain: "students-db-c8a71.firebaseapp.com",
-    projectId: "students-db-c8a71",
-    storageBucket: "students-db-c8a71.appspot.com",
-    messagingSenderId: "72997525386",
-    appId: "1:72997525386:web:f031824d99c6a7f0ab1b",
-    measurementId: "G-JCRFSVCRT"
-  };
+  async function addStudent() {
+    await addDoc(collection(db, "students"), {
+      name: "Ahmed Ali",
+      stage: "4"
+    });
+    console.log("تمت الإضافة بنجاح!");
+  }
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-
-  console.log("Firebase Connected!", db);
+  addStudent();
 </script>
 
 <body>
   <div id="root"></div>
 </body>
 </html>
+
 
 
 
