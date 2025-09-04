@@ -1,19 +1,23 @@
 // firebase.js
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+import { getDatabase } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
 
-// Config مالك من Firebase Console
 const firebaseConfig = {
-  apiKey: "AIzaSyDaeDcaVeX9IywIrptTHLsr4FWzaLpI0-s",
-  authDomain: "students-db-c8a71.firebaseapp.com",
-  projectId: "students-db-c8a71",
-  storageBucket: "students-db-c8a71.firebasestorage.app",
-  messagingSenderId: "729379523586",
-  appId: "1:729379523586:web:fe0312849d9cc6a7f0ab1b",
-  measurementId: "G-JCR5FCVCRT"
+  apiKey: "AIzaSyCDZZqUzXRAwh3RKaGp1unluBWYMWF2Q7s",
+  authDomain: "hammurabi-ccf6d.firebaseapp.com",
+  databaseURL: "https://hammurabi-ccf6d-default-rtdb.firebaseio.com",
+  projectId: "hammurabi-ccf6d",
+  storageBucket: "hammurabi-ccf6d.firebasestorage.app",
+  messagingSenderId: "257971367886",
+  appId: "1:257971367886:web:761013b57defa59a3b459f",
+  measurementId: "G-KS3SWR8LYC"
 };
 
-// Initialize Firebase
+// تهيئة Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-console.log("🔥 Firebase جاهز و متصل");
+
+// قاعدة البيانات
+const db = getDatabase(app);
+
+// نصدرها حتى نستخدمها بالملفات الأخرى
+export { db };
