@@ -1,37 +1,171 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-   <title>تقسيم طلاب المرحلة الرابعة</title>
-
-<script type="module" crossorigin src="/hammurabi-4-stage/assets/index-DIKJYCb1.js"></script>
-<link rel="stylesheet" crossorigin href="/hammurabi-4-stage/assets/index-B7FhIYK4.css">
-
-
+  <meta charset="UTF-8">
+  <title>📚 موقع تقسيم طلاب المرحلة الرابعة</title>
+  <style>
+    body {
+      font-family: "Tahoma", sans-serif;
+      direction: rtl;
+      background: #f9fafb;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    header {
+      background: linear-gradient(135deg, #2563eb, #3b82f6);
+      color: white;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      margin: 0;
+      font-size: 1.8rem;
+    }
+    .form-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin: 20px;
+      flex-wrap: wrap;
+    }
+    input {
+      padding: 10px 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
+      flex: 1;
+      min-width: 150px;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+    input:focus {
+      border-color: #2563eb;
+    }
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      background: #2563eb;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #1e40af;
+    }
+    #students-list {
+      display: grid;
+      gap: 15px;
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 0 15px;
+    }
+    .student-card {
+      background: white;
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      text-align: right;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: transform 0.2s;
+    }
+    .student-card:hover {
+      transform: translateY(-3px);
+    }
+    .student-name {
+      font-weight: bold;
+      color: #2563eb;
+    }
+    .student-stage {
+      background: #e0e7ff;
+      color: #1e3a8a;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+    }
+  </style>
 </head>
-  <!-- Firebase App (core SDK) -->
-<script type="module">
-  import { db } from "./firebase.js";
-  import { collection, addDoc } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
-
-  async function addStudent() {
-    await addDoc(collection(db, "students"), {
-      name: "Ahmed Ali",
-      stage: "4"
-    });
-    console.log("تمت الإضافة بنجاح!");
-  }
-
-  addStudent();
-</script>
-
 <body>
-  <div id="root"></div>
+  <header>
+    <h1>📚 موقع تقسيم طلاب المرحلة الرابعة</h1>
+  </header>
+
+  <!-- إدخال طالب جديد -->
+  <div class="form-container">
+    <input type="text" id="nameInput" placeholder="👤 اسم الطالب">
+    <input type="text" id="stageInput" placeholder="📌 المرحلة">
+    <button id="addBtn">➕ إضافة</button>
+  </div>
+
+  <!-- عرض الطلاب -->
+  <div id="students-list"></div>
+
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+    import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
+
+    // 🔑 إعدادات Firebase الخاصة بمشروعك
+    const firebaseConfig = {
+      apiKey: "AIzaSyCDZZqUzXRAwh3RKaGp1unIuBWYMWF2Q7s",
+      authDomain: "hammurabi-ccf6d.firebaseapp.com",
+      databaseURL: "https://hammurabi-ccf6d-default-rtdb.firebaseio.com",
+      projectId: "hammurabi-ccf6d",
+      storageBucket: "hammurabi-ccf6d.appspot.com",
+      messagingSenderId: "257971367886",
+      appId: "1:257971367886:web:761013b57defa59a3b459f",
+      measurementId: "G-K3S3WR8LYC"
+    };
+
+    // ⚙️ تهيئة Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // 📝 إضافة طالب
+    function addStudent(name, stage) {
+      const studentsRef = ref(db, "students");
+      push(studentsRef, { name, stage });
+    }
+
+    // 👀 عرض الطلاب لحظياً
+    function listenStudents() {
+      const studentsRef = ref(db, "students");
+      onValue(studentsRef, (snapshot) => {
+        const data = snapshot.val();
+        const list = document.getElementById("students-list");
+        list.innerHTML = "";
+        for (let id in data) {
+          const student = data[id];
+          const card = document.createElement("div");
+          card.className = "student-card";
+          card.innerHTML = `
+            <span class="student-name">👤 ${student.name}</span>
+            <span class="student-stage">📌 ${student.stage}</span>
+          `;
+          list.appendChild(card);
+        }
+      });
+    }
+
+    // تشغيل القراءة
+    listenStudents();
+
+    // زر الإضافة
+    document.getElementById("addBtn").addEventListener("click", () => {
+      const name = document.getElementById("nameInput").value.trim();
+      const stage = document.getElementById("stageInput").value.trim();
+      if (name && stage) {
+        addStudent(name, stage);
+        document.getElementById("nameInput").value = "";
+        document.getElementById("stageInput").value = "";
+      }
+    });
+  </script>
 </body>
 </html>
-
-
-
-
-
