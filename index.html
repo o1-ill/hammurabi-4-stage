@@ -2,106 +2,21 @@
 <html lang="ar">
 <head>
   <meta charset="UTF-8">
-  <title>📚 موقع تقسيم طلاب المرحلة الرابعة</title>
+  <title>موقع تقسيم طلاب المرحلة الرابعة</title>
   <style>
-    body {
-      font-family: "Tahoma", sans-serif;
-      direction: rtl;
-      background: #f9fafb;
-      margin: 0;
-      padding: 0;
-      color: #333;
-    }
-    header {
-      background: linear-gradient(135deg, #2563eb, #3b82f6);
-      color: white;
-      padding: 20px;
-      text-align: center;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-    h1 {
-      margin: 0;
-      font-size: 1.8rem;
-    }
-    .form-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-      margin: 20px;
-      flex-wrap: wrap;
-    }
-    input {
-      padding: 10px 15px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      font-size: 1rem;
-      flex: 1;
-      min-width: 150px;
-      outline: none;
-      transition: border-color 0.3s;
-    }
-    input:focus {
-      border-color: #2563eb;
-    }
-    button {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 8px;
-      background: #2563eb;
-      color: white;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    button:hover {
-      background: #1e40af;
-    }
-    #students-list {
-      display: grid;
-      gap: 15px;
-      max-width: 600px;
-      margin: 20px auto;
-      padding: 0 15px;
-    }
-    .student-card {
-      background: white;
-      padding: 15px;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-      text-align: right;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      transition: transform 0.2s;
-    }
-    .student-card:hover {
-      transform: translateY(-3px);
-    }
-    .student-name {
-      font-weight: bold;
-      color: #2563eb;
-    }
-    .student-stage {
-      background: #e0e7ff;
-      color: #1e3a8a;
-      padding: 3px 8px;
-      border-radius: 6px;
-      font-size: 0.9rem;
-    }
+    body { font-family: Arial, sans-serif; direction: rtl; text-align: center; }
+    input, button { margin: 5px; padding: 8px; }
+    #students-list { margin-top: 20px; }
+    p { background: #f1f1f1; padding: 10px; border-radius: 6px; }
   </style>
 </head>
 <body>
-  <header>
-    <h1>📚 موقع تقسيم طلاب المرحلة الرابعة</h1>
-  </header>
+  <h1>📚 موقع تقسيم طلاب المرحلة الرابعة</h1>
 
   <!-- إدخال طالب جديد -->
-  <div class="form-container">
-    <input type="text" id="nameInput" placeholder="👤 اسم الطالب">
-    <input type="text" id="stageInput" placeholder="📌 المرحلة">
-    <button id="addBtn">➕ إضافة</button>
-  </div>
+  <input type="text" id="nameInput" placeholder="اسم الطالب">
+  <input type="text" id="stageInput" placeholder="المرحلة">
+  <button id="addBtn">➕ إضافة</button>
 
   <!-- عرض الطلاب -->
   <div id="students-list"></div>
@@ -142,13 +57,9 @@
         list.innerHTML = "";
         for (let id in data) {
           const student = data[id];
-          const card = document.createElement("div");
-          card.className = "student-card";
-          card.innerHTML = `
-            <span class="student-name">👤 ${student.name}</span>
-            <span class="student-stage">📌 ${student.stage}</span>
-          `;
-          list.appendChild(card);
+          const p = document.createElement("p");
+          p.textContent = `👤 ${student.name} - المرحلة ${student.stage}`;
+          list.appendChild(p);
         }
       });
     }
@@ -158,8 +69,8 @@
 
     // زر الإضافة
     document.getElementById("addBtn").addEventListener("click", () => {
-      const name = document.getElementById("nameInput").value.trim();
-      const stage = document.getElementById("stageInput").value.trim();
+      const name = document.getElementById("nameInput").value;
+      const stage = document.getElementById("stageInput").value;
       if (name && stage) {
         addStudent(name, stage);
         document.getElementById("nameInput").value = "";
