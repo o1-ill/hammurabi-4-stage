@@ -1,82 +1,14 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>موقع تقسيم طلاب المرحلة الرابعة</title>
-  <style>
-    body { font-family: Arial, sans-serif; direction: rtl; text-align: center; }
-    input, button { margin: 5px; padding: 8px; }
-    #students-list { margin-top: 20px; }
-    p { background: #f1f1f1; padding: 10px; border-radius: 6px; }
-  </style>
+
+  <script type="module" src="assets/index-DlKJYCb1.js"></script>
+  <link rel="stylesheet" href="assets/index-B7FhIYK4.css">
 </head>
 <body>
-  <h1>📚 موقع تقسيم طلاب المرحلة الرابعة</h1>
-
-  <!-- إدخال طالب جديد -->
-  <input type="text" id="nameInput" placeholder="اسم الطالب">
-  <input type="text" id="stageInput" placeholder="المرحلة">
-  <button id="addBtn">➕ إضافة</button>
-
-  <!-- عرض الطلاب -->
-  <div id="students-list"></div>
-
-  <!-- Firebase -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-    import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
-
-    // 🔑 إعدادات Firebase الخاصة بمشروعك
-    const firebaseConfig = {
-      apiKey: "AIzaSyCDZZqUzXRAwh3RKaGp1unIuBWYMWF2Q7s",
-      authDomain: "hammurabi-ccf6d.firebaseapp.com",
-      databaseURL: "https://hammurabi-ccf6d-default-rtdb.firebaseio.com",
-      projectId: "hammurabi-ccf6d",
-      storageBucket: "hammurabi-ccf6d.appspot.com",
-      messagingSenderId: "257971367886",
-      appId: "1:257971367886:web:761013b57defa59a3b459f",
-      measurementId: "G-K3S3WR8LYC"
-    };
-
-    // ⚙️ تهيئة Firebase
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
-
-    // 📝 إضافة طالب
-    function addStudent(name, stage) {
-      const studentsRef = ref(db, "students");
-      push(studentsRef, { name, stage });
-    }
-
-    // 👀 عرض الطلاب لحظياً
-    function listenStudents() {
-      const studentsRef = ref(db, "students");
-      onValue(studentsRef, (snapshot) => {
-        const data = snapshot.val();
-        const list = document.getElementById("students-list");
-        list.innerHTML = "";
-        for (let id in data) {
-          const student = data[id];
-          const p = document.createElement("p");
-          p.textContent = `👤 ${student.name} - المرحلة ${student.stage}`;
-          list.appendChild(p);
-        }
-      });
-    }
-
-    // تشغيل القراءة
-    listenStudents();
-
-    // زر الإضافة
-    document.getElementById("addBtn").addEventListener("click", () => {
-      const name = document.getElementById("nameInput").value;
-      const stage = document.getElementById("stageInput").value;
-      if (name && stage) {
-        addStudent(name, stage);
-        document.getElementById("nameInput").value = "";
-        document.getElementById("stageInput").value = "";
-      }
-    });
-  </script>
+  <div id="root"></div>
 </body>
 </html>
